@@ -1,0 +1,101 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<EntityLayer.Concrete.Blog>
+
+
+@{ ViewBag.Title = "AdminBlogList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+
+<h2>Blog Listesi</h2>
+<div style="text-align: right;">
+    <form method="get" action="@Url.Action("AdminBlogList2")">
+        <input type="text" name="searchQuery" placeholder="Listede Ara" value="@ViewBag.SearchQuery" />
+        <button type="submit">Ara</button>
+    </form>
+</div>
+</br>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Başlık</th>
+        <th>Kategori</th>
+        <th>Tarih</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+        <th>Detaylar</th>
+        <th>Yorumlar</th>
+    </tr>
+    @foreach (var item in Model.OrderByDescending(x => x.BlogDate)) // En yeniden en eskiye sıralama
+    {
+<tr>
+    <th>@item.BlogID</th>
+    <th>@item.BlogTitle</th>
+    <th>@item.Category.CategoryName</th>
+    <th>@item.BlogDate.ToShortDateString()</th>
+    <th><a href="/Blog/DeleteBlog/@item.BlogID" class="btn btn-danger">Sil</a></th>
+    <th><a href="/Blog/UpdateBlog/@item.BlogID" class="btn btn-success">Güncelle</a></th>
+    <th><a href="/Blog/BlogDetails/@item.BlogID" class="btn btn-warning">Sitede Gör</a></th>
+    <th><a href="/Blog/GetCommentByBlog/@item.BlogID" class="btn btn-dark">Yorumlar</a></th>
+</tr>}
+</table>
+
+<a href="/Blog/AddNewBlog" class="btn btn-primary">Yeni Yazı Ekle</a>
+
+</br>
+</br>
+
+<!-- Sayfa numaralarını gösterir -->
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("AdminBlogList", new { page }))
+</div>
+
+
+<style>
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        /* Sayfa numaralandırma için genel stil */
+        .pagination-container .PagedList-skipToFirst,
+        .pagination-container .PagedList-skipToLast,
+        .pagination-container .PagedList-skipToNext,
+        .pagination-container .PagedList-skipToPrevious,
+        .pagination-container .PagedList-page {
+            display: inline-block; /* Elemanları yatay olarak hizala */
+            margin: 0 6px; /* Elemanlar arasındaki boşluk */
+            padding: 8px 16px; /* İç kenar boşluğu */
+            background-color: #ffffff; /* Arka plan rengini beyaz yap */
+            border: 1px solid #ddd; /* Kenarlık */
+            color: #007bff; /* Sayfa numaralarının rengi */
+            text-decoration: none; /* Alt çizgiyi kaldır */
+            border-radius: 50px; /* Yuvarlak kenarlar */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+            transition: all 0.3s ease; /* Hover efekti için geçiş süresi */
+        }
+
+            /* Hover efekti */
+            .pagination-container .PagedList-skipToFirst:hover,
+            .pagination-container .PagedList-skipToLast:hover,
+            .pagination-container .PagedList-skipToNext:hover,
+            .pagination-container .PagedList-page:hover {
+                background-color: #007bff; /* Arka plan rengini mavi yap */
+                color: #ffffff; /* Metin rengini beyaz yap */
+                border-color: #007bff; /* Kenarlık rengini mavi yap */
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Hover efektine daha belirgin gölge */
+                transform: translateY(-2px); /* Hover sırasında elemanı hafifçe yukarı kaldır */
+            }
+
+        /* Aktif sayfa numarası */
+        .pagination-container .active {
+            background-color: #007bff; /* Aktif sayfanın arka planı mavi */
+            color: #ffffff; /* Aktif sayfanın metin rengi beyaz */
+            border-color: #007bff; /* Kenarlık rengi */
+            pointer-events: none; /* Tıklamayı devre dışı bırak */
+        }
+</style>
+
+
+

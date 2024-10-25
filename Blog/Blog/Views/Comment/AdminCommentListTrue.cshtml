@@ -1,0 +1,51 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<EntityLayer.Concrete.Comment>
+
+@{ ViewBag.Title = "AdminCommentList";
+                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+
+<!DOCTYPE html>
+<html>
+<body class="hold-transition sidebar-mini">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card-body">
+                    <!-- Post -->
+                    @foreach (var item in Model)
+                    {
+        <div class="post">
+            <div class="user-block">
+                <img class="img-circle img-bordered-sm" src="/Admin/dist/img/user1-128x128.jpg" alt="user image">
+                <span class="username">
+                    <a href="#">@item.UserName - @item.Blogs.BlogTitle</a>
+                </span>
+                <span class="description">@(((DateTime)item.CommentDate).ToString("dd-MMM-yyyy"))</span>
+            </div>
+            <!-- /.user-block -->
+            <p>
+                @item.CommentText
+            </p>
+            <p>
+                <a href="/Comment/StatusChangeToFalse/@item.CommentID" class="link-black text-sm mr-2"><i class="fas fa-x-ray"></i> Yorumu Kaldır</a>
+                <span class="float-right">
+                    <a href="#" class="link-black text-sm">
+                        <i class="far fa-comments mr-1"></i> Yorumu Pasife Al
+                    </a>
+                </span>
+            </p>
+        </div>}
+                </div>
+            </div>
+        </div>
+        <!-- Sayfa numaralarını gösterir -->
+        <div class="pagination-container">
+            @Html.PagedListPager(Model, page => Url.Action("AdminCommentListTrue", new { page }))
+        </div>
+    </section>
+</body>
+</html>
+

@@ -1,0 +1,68 @@
+﻿@model EntityLayer.Concrete.Blog
+
+@{
+    ViewBag.Title = "UpdateBlog";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Güncelleme</h2>
+
+<form class="form-group" method="post" enctype="multipart/form-data">
+    @Html.HiddenFor(x => x.BlogID, new { @class = "form-control" })
+    </br>
+    @Html.Label("Yazı Başlığı")
+    @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+    </br>
+    @Html.Label("Kategori")
+    @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.values, new { @class = "form-control" })
+    </br>
+    @Html.Label("Resim Yolu")
+    <input type="file" id="BlogImage" name="BlogImage" class="form-control" accept="image/*" onchange="previewImage(event)" />
+    <img id="preview" src="@(!string.IsNullOrEmpty(Model.BlogImage) ? Url.Content(Model.BlogImage) : Url.Content("~/Resimler/defaultimage.jpg"))" alt="Blog Görseli" style="max-height: 300px; width: auto; margin-top: 10px;" />
+
+    <!-- Mevcut resim yolunu gizli alan olarak ekliyoruz -->
+    <input type="hidden" name="ExistingImage" value="@Model.BlogImage" />
+    </br>
+    @Html.Label("Tarih")
+    @Html.TextBoxFor(x => x.BlogDate, new { @class = "form-control" })
+    </br>
+    @Html.Label("Yazar")
+    @Html.DropDownListFor(x => x.AuthorID, (List<SelectListItem>)ViewBag.values2, new { @class = "form-control" })
+    </br>
+    @Html.Label("İçerik")
+    @Html.TextAreaFor(x => x.BlogContent, new { @class = "textarea", style = "width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" })
+
+    </br>
+    <button class="btn btn-info">Kaydet</button>
+</form>
+
+
+<script>
+    function previewImage(event) {
+        var file = event.target.files[0]; // Seçilen dosyayı alıyoruz
+        var reader = new FileReader();
+
+        if (file) {
+            // Dosya boyutu 10 MB'den büyükse uyarı ver ve dosya seçimini iptal et
+            if (file.size > 5 * 1024 * 1024) { // 10 MB = 10 * 1024 * 1024 byte
+                alert("Görsel boyutu 5 MB'den büyük olamaz.");
+                event.target.value = ""; // Dosya seçim alanını temizler
+                document.getElementById('preview').src = "@Url.Content("~/Resimler/default-image.jpg")"; // Varsayılan görsele geri dön
+                return;
+            }
+
+            // Dosya boyutu uygunsa önizlemeyi göster
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(file); // Resmi base64 olarak yükler
+        } else {
+            // Eğer dosya seçilmezse varsayılan resmi göster
+            document.getElementById('preview').src = "@Url.Content("~/Resimler/default-image.jpg")";
+        }
+    }
+
+    // Dosya input'a her seçim yapıldığında previewImage fonksiyonunu çağırıyoruz
+    document.getElementById('BlogImage').addEventListener('change', previewImage);
+</script>

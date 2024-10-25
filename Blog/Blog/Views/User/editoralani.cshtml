@@ -1,0 +1,51 @@
+﻿@model EntityLayer.Concrete.Blog
+@{
+    ViewBag.Title = "editoralani";
+    Layout = "~/Views/Shared/_AuthorLayout.cshtml";
+}
+
+<h2>editoralani</h2>
+
+
+<form class="form-group" method="post">
+    @Html.Label("Yazı Başlığı")
+    @Html.TextBoxFor(x => x.BlogID, new { @class = "form-control" })
+    </br>
+    @Html.Label("Yazı Başlığı")
+    @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+    </br>
+    @Html.Label("Kategori")
+    @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.values, new { @class = "form-control" })
+    </br>
+    @Html.Label("Resim Yolu")
+    @Html.TextBoxFor(x => x.BlogImage, new { @class = "form-control" })
+    </br>
+    @Html.Label("Tarih")
+    @Html.TextBoxFor(x => x.BlogDate, new { @class = "form-control" })
+    </br>
+    @Html.Label("Yazar")
+    @Html.DropDownListFor(x => x.AuthorID, (List<SelectListItem>)ViewBag.values2, new { @class = "form-control" })
+    </br>
+    @Html.Label("İçerik")
+    @Html.TextAreaFor(x => x.BlogContent, 5, 20, new { @class = "form-control" })
+    </br>
+    <button class="btn btn-info">Kaydet</button>
+</form>
+
+<link rel="stylesheet" href="/Admin/dist/css/adminlte.min.css">
+<!-- Summernote -->
+<link rel="stylesheet" href="/Admin/plugins/summernote/summernote-bs4.css">
+
+
+<!-- jQuery -->
+<script src="/Admin/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/Admin/dist/js/adminlte.min.js"></script>
+<!-- Summernote -->
+<script src="/Admin/plugins/summernote/summernote-bs4.min.js"></script>
+
+
+<textarea class="textarea" placeholder="Place some text here"
+          style="width: 100%; height: 700px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>

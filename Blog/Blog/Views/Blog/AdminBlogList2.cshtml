@@ -1,0 +1,159 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<EntityLayer.Concrete.Blog>
+
+@{
+    ViewBag.Title = "AdminBlogList2";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Blog Listesi</h2>
+
+<!DOCTYPE html>
+<html>
+<body class="hold-transition sidebar-mini">
+
+    <style>
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            /* Sayfa numaralandırma için genel stil */
+            .pagination-container .PagedList-skipToFirst,
+            .pagination-container .PagedList-skipToLast,
+            .pagination-container .PagedList-skipToNext,
+            .pagination-container .PagedList-skipToPrevious,
+            .pagination-container .PagedList-page {
+                display: inline-block; /* Elemanları yatay olarak hizala */
+                margin: 0 6px; /* Elemanlar arasındaki boşluk */
+                padding: 8px 16px; /* İç kenar boşluğu */
+                background-color: #ffffff; /* Arka plan rengini beyaz yap */
+                border: 1px solid #ddd; /* Kenarlık */
+                color: #007bff; /* Sayfa numaralarının rengi */
+                text-decoration: none; /* Alt çizgiyi kaldır */
+                border-radius: 50px; /* Yuvarlak kenarlar */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+                transition: all 0.3s ease; /* Hover efekti için geçiş süresi */
+            }
+
+                /* Hover efekti */
+                .pagination-container .PagedList-skipToFirst:hover,
+                .pagination-container .PagedList-skipToLast:hover,
+                .pagination-container .PagedList-skipToNext:hover,
+                .pagination-container .PagedList-page:hover {
+                    background-color: #007bff; /* Arka plan rengini mavi yap */
+                    color: #ffffff; /* Metin rengini beyaz yap */
+                    border-color: #007bff; /* Kenarlık rengini mavi yap */
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Hover efektine daha belirgin gölge */
+                    transform: translateY(-2px); /* Hover sırasında elemanı hafifçe yukarı kaldır */
+                }
+
+            /* Aktif sayfa numarası */
+            .pagination-container .active {
+                background-color: #007bff; /* Aktif sayfanın arka planı mavi */
+                color: #ffffff; /* Aktif sayfanın metin rengi beyaz */
+                border-color: #007bff; /* Kenarlık rengi */
+                pointer-events: none; /* Tıklamayı devre dışı bırak */
+            }
+    </style>
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Blog Listesi</h3>
+                <div style="text-align: right;">
+                    <form method="get" action="@Url.Action("AdminBlogList2")">
+                        <input type="text" name="searchQuery" placeholder="Listede Ara" value="@ViewBag.SearchQuery" />
+                        <button type="submit">Ara</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th style="width: 1%">
+                                ID
+                            </th>
+                            <th style="width: 20%">
+                                Yazı Başlığı
+                            </th>
+
+                            <th style="width: 6%">
+                                Yazar
+                            </th>
+
+                            <th style="width: 10%">
+                                Beğeni Oranı
+                            </th>
+
+                            <th style="width: 6%" class="text-center">
+                                Kategori
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+            <tr>
+                <td>@item.BlogID</td>
+                <td>@item.BlogTitle</td>
+                <td>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <img alt="Avatar" class="table-avatar" src="@item.Author.AuthorImage">
+                        </li>
+                    </ul>
+                </td>
+                <td class="project_progress">
+
+                    <div class="progress progress-sm">
+
+                        <div class="progress-bar bg-green" role="progressbar" aria-volumenow="57" aria-volumemin="0" aria-volumemax="100" style="width: 57%">
+                        </div>
+                    </div>
+                    <small>
+                        57% Complete
+                    </small>
+
+                </td>
+                <td class="project-state">
+                    <span class="badge badge-success">@item.Category.CategoryName</span>
+                </td>
+                <td class="project-actions text-right">
+                    <a class="btn btn-primary btn-sm" href="/Blog/BlogDetails/@item.BlogID">
+                        <i class="fas fa-folder">
+                        </i>
+                        Sitede Gör
+                    </a>
+                    <a class="btn btn-info btn-sm" href="/Blog/UpdateBlog/@item.BlogID">
+                        <i class="fas fa-pencil-alt">
+                        </i>
+                        Düzenle
+                    </a>
+                    <a class="btn btn-danger btn-sm" href="/Blog/DeleteBlog/@item.BlogID">
+                        <i class="fas fa-trash">
+                        </i>
+                        Sil
+                    </a>
+                </td>
+            </tr>}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </section>
+
+    <!-- Sayfa numaralarını gösterir -->
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("AdminBlogList2", new { page }))
+    </div>
+</body>
+</html>

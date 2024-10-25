@@ -1,0 +1,39 @@
+﻿@model EntityLayer.Concrete.Blog
+
+@{ ViewBag.Title = "AddNewBlog";
+                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+
+<form class="form-group" method="post" enctype="multipart/form-data">
+    @Html.Label("Yazı Başlığı")
+    @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+    </br>
+    @Html.Label("Kategori")
+    @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.values, new { @class = "form-control" })
+    </br>
+    @Html.Label("Resim Yolu")
+    <input type="file" id="BlogImage" name="BlogImage" class="form-control" accept="image/*" />
+    </br>
+    @Html.Label("Tarih")
+    @Html.EditorFor(x => x.BlogDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @Value = DateTime.Now.ToString("yyyy-MM-dd") } })
+    </br>
+    @Html.Label("Yazar")
+    @Html.DropDownListFor(x => x.AuthorID, (List<SelectListItem>)ViewBag.values2, new { @class = "form-control" })
+    </br>
+    @Html.Label("İçerik")
+    @Html.TextAreaFor(x => x.BlogContent, new { @class = "textarea", style = "width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" })
+    </br>
+    <button class="btn btn-info">Kaydet</button>
+</form>
+
+<!-- Summernote -->
+<link rel="stylesheet" href="/Admin/plugins/summernote/summernote-bs4.css">
+
+<!-- Summernote -->
+<script src="/Admin/plugins/summernote/summernote-bs4.min.js"></script>
+
+<script>
+    $(function () {
+        // Summernote
+        $('.textarea').summernote()
+    })
+</script>

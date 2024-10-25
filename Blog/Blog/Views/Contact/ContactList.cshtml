@@ -1,0 +1,101 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<EntityLayer.Concrete.Contact>
+
+@{
+    ViewBag.Title = "ContactList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pt-5">
+    <h2 class="mb-5">Gelen Mesajlar</h2>
+    <ul class="comment-list">
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="timeline">
+                        <div>
+                            <i class="fas fa-envelope bg-blue"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-clock"></i> @(((DateTime)item.MessageDate).ToString("dd-MMM-yyyy"))</span>
+                                <h3 class="timeline-header">Gönderen Kişi: <b><span style="color:black;">@item.Name @item.SurName</span></b> - <span style="color:dodgerblue;">@item.Mail</span></h3>
+                                <div class="timeline-inverse">Konu: <b><span style="color:orangered;">@item.Subject</span></b></div>
+                                <div class="timeline-item"></div>
+                                <div class="timeline-body">
+                                    @item.Message
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </ul>
+</div>
+
+<!-- Sayfa numaralarını gösterir -->
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("ContactList", new { page }))
+</div>
+
+
+<style>
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        /* Sayfa numaralandırma için genel stil */
+        .pagination-container .PagedList-skipToFirst,
+        .pagination-container .PagedList-skipToLast,
+        .pagination-container .PagedList-skipToNext,
+        .pagination-container .PagedList-skipToPrevious,
+        .pagination-container .PagedList-page {
+            display: inline-block; /* Elemanları yatay olarak hizala */
+            margin: 0 6px; /* Elemanlar arasındaki boşluk */
+            padding: 8px 16px; /* İç kenar boşluğu */
+            background-color: #ffffff; /* Arka plan rengini beyaz yap */
+            border: 1px solid #ddd; /* Kenarlık */
+            color: #007bff; /* Sayfa numaralarının rengi */
+            text-decoration: none; /* Alt çizgiyi kaldır */
+            border-radius: 50px; /* Yuvarlak kenarlar */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+            transition: all 0.3s ease; /* Hover efekti için geçiş süresi */
+        }
+
+            /* Hover efekti */
+            .pagination-container .PagedList-skipToFirst:hover,
+            .pagination-container .PagedList-skipToLast:hover,
+            .pagination-container .PagedList-skipToNext:hover,
+            .pagination-container .PagedList-page:hover {
+                background-color: #007bff; /* Arka plan rengini mavi yap */
+                color: #ffffff; /* Metin rengini beyaz yap */
+                border-color: #007bff; /* Kenarlık rengini mavi yap */
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Hover efektine daha belirgin gölge */
+                transform: translateY(-2px); /* Hover sırasında elemanı hafifçe yukarı kaldır */
+            }
+
+        /* Aktif sayfa numarası */
+        .pagination-container .active {
+            background-color: #007bff; /* Aktif sayfanın arka planı mavi */
+            color: #ffffff; /* Aktif sayfanın metin rengi beyaz */
+            border-color: #007bff; /* Kenarlık rengi */
+            pointer-events: none; /* Tıklamayı devre dışı bırak */
+        }
+</style>
+
+
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+<!-- AdminLTE css -->
+<link rel="stylesheet" href="../../dist/css/adminlte.min.css">

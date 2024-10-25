@@ -1,0 +1,40 @@
+﻿@model IEnumerable<EntityLayer.Concrete.Blog>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<title>Arama Sonuçları</title>
+
+<div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('/Resimler/search.jpg');">
+    <div class="container">
+        <div class="row same-height justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+                    <h1 class="">Arama Sonuçları</h1>
+                    <p class="lead mb-4 text-white">
+                        @if (Model.Any())
+                        {
+                            <ul>
+                                @foreach (var item in Model)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("BlogDetails", new { id = item.BlogID })">
+                                            @item.BlogTitle
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                        <p class="text-white">Sonuç bulunamadı. Başka bir kelime yazarak yeniden deneyebilirsiniz.</p>
+                    }</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Action("Footer", "About")

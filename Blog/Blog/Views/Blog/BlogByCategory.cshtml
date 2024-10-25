@@ -1,0 +1,76 @@
+﻿@model IEnumerable<EntityLayer.Concrete.Blog>
+@{
+    ViewBag.Title = "BlogByCategory";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <span>Kategori</span>
+                <h3>@ViewBag.CategoryName</h3>
+                <p>@Html.Raw(ViewBag.CategoryDesc)</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="site-section bg-white">
+    <div class="container">
+        <div class="row">
+             @foreach (var item in Model) { <div class="col-lg-4 mb-4">
+            <div class="entry2">
+            <a href="/Blog/BlogDetails/@item.BlogID"><img src="@item.BlogImage" style="height:250px" alt="Image" class="img-fluid rounded"></a>
+            <div class="excerpt">
+                <span class="post-category text-white bg-secondary mb-3">@item.Category.CategoryName</span>
+
+                <h2><a href="/Blog/BlogDetails/@item.BlogID">@item.BlogTitle</a></h2>
+                <div class="post-meta align-items-center text-left clearfix">
+                    <figure class="author-figure mb-0 mr-3 float-left"><img src="@item.Author.AuthorImage" alt="Image" class="img-fluid"></figure>
+                    <span class="d-inline-block mt-1"><a href="#">@item.Author.AuthorName</a></span>
+                    <span>&nbsp;-&nbsp; @(((DateTime)item.BlogDate).ToString("dd-MMM-yyyy"))</span>
+                </div>
+
+                <p>
+                    @{
+                        string content = item.BlogContent;
+
+                        // HTML etiketlerini ve &nbsp; gibi öğeleri temizliyoruz
+                        string plainText = System.Text.RegularExpressions.Regex.Replace(content, "<.*?>|&nbsp;", string.Empty);
+
+                        string result;
+
+                        if (plainText.Length <= 200)
+                        {
+                            result = plainText.Trim(); // Eğer içerik 200 karakterden kısaysa tamamını döndür
+                        }
+                        else
+                        {
+                            string truncatedContent = plainText.Substring(0, 200); // İlk 200 karakteri al
+                            int lastSpaceIndex = truncatedContent.LastIndexOf(" ");
+
+                            if (lastSpaceIndex > 0)
+                            {
+                                result = truncatedContent.Substring(0, lastSpaceIndex).Trim(); // Son kelimeyi kesmemek için tam kelimeye kadar al
+                            }
+                            else
+                            {
+                                result = truncatedContent.Trim(); // Eğer boşluk yoksa direkt 200 karakterlik kısmı döndür
+                            }
+                        }
+
+                        @result
+                    }
+                </p>
+
+                <p><a href="/Blog/BlogDetails/@item.BlogID">Devamı...</a></p>
+            </div>
+            </div>
+            </div>            
+        }
+        </div>
+    </div>
+</div>
+
+@Html.Action("Footer", "About")
+
